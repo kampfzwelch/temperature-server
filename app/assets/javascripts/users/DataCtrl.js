@@ -34,8 +34,8 @@ controllersModule.controller('testCtrl', function($route, $scope, $routeParams,
 		data.forEach(pushIt);
 
 		return {
-			temperature : temps,
-			time : times
+			temperature : temps.slice(Math.max(temps.length - 10, 1)),
+			time : times.slice(Math.max(times.length - 10, 1))
 		};
 	};
 
