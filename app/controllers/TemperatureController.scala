@@ -62,12 +62,21 @@ class TemperatureController extends Controller with MongoController {
       sort(Json.obj("created" -> -1)).
       // perform the query and get a cursor of JsObject
       cursor[Temperature]
-
+      
     // gather all the JsObjects in a list
     val futureTemperatureList: Future[List[Temperature]] = cursor.collect[List]()
+    
+    val temps = Vector.tabulate(24)( n => (0, 0.0))
+    val ttt = futureTemperatureList map ( t => t.foldLeft(temps)
+        ((li,temp) => li.updated(temp.hour, (li(temp.hour)._1 + 1, li(temp.hour)._2 + temp.temp)))
+        ) 
+    
+     val hoursTemp = ttt.map(x => List.tabulate(24)
+         (n => Temperature( if(x(n)._1 == 0) 0.0 else x(n)._2/x(n)._1, room, n, 0, day, month, year)))
 
+    
     // transform the list into a JsArray
-    val futureTemperatureJsonArray: Future[JsArray] = futureTemperatureList.map { temp =>
+    val futureTemperatureJsonArray: Future[JsArray] = hoursTemp.map { temp =>
       Json.arr(temp)
     }
     // everything's ok! Let's reply with the array

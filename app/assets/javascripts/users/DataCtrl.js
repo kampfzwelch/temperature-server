@@ -28,14 +28,14 @@ controllersModule.controller('testCtrl', function($route, $scope, $routeParams,
 
 		function pushIt(o) {
 			temps.push(o.temp);
-			times.push(o.hour + ":" + o.minute);
+			times.push(o.hour + ":" + o.minute + "0");
 		}
 
 		data.forEach(pushIt);
 
 		return {
-			temperature : temps.slice(Math.max(temps.length - 10, 1)),
-			time : times.slice(Math.max(times.length - 10, 1))
+			temperature : temps.slice(Math.max(temps.length - 24, 0)),
+			time : times.slice(Math.max(times.length - 24, 0))
 		};
 	};
 
