@@ -8,11 +8,6 @@
 GET     /                           @controllers.Application.index
 GET     /randomUUID                 @controllers.Application.randomUUID
 
-# User management API
-GET     /users                      @controllers.Users.findUsers
-POST    /user                       @controllers.Users.createUser
-PUT     /user/:firstName/:lastName  @controllers.Users.updateUser(firstName: String, lastName: String)
-
 # Temperature API
 GET     /temperature/:room/:d/:m/:y @controllers.TemperatureController.getTemperatureForRoom(room : String, d: Int, m: Int, y: Int)
 GET     /temperature/:room/today 	@controllers.TemperatureController.getTemperatureForRoomToday(room : String)
