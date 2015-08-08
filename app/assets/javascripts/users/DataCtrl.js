@@ -1,11 +1,12 @@
 controllersModule.controller('testCtrl', function($route, $scope, $routeParams,
 		TemperatureService, $log) {
-	$scope.someData = {
+	$scope.dayData = {
 		labels : [],
 		datasets : [ {
 			data : []
 		} ]
 	};
+	
 	$log.debug($routeParams.room);
 
 	currentDate = new Date();
@@ -43,7 +44,7 @@ controllersModule.controller('testCtrl', function($route, $scope, $routeParams,
 		$event.preventDefault();
 		$event.stopPropagation();
 
-		$scope.opened = true;
+		$scope.opened = !$scope.opened;
 	};
 
 	var callTempService = function() {
@@ -55,8 +56,8 @@ controllersModule.controller('testCtrl', function($route, $scope, $routeParams,
 			var dd = splitData(data);
 			$scope.temperatureData = dd;
 
-			$scope.someData.datasets[0].data = dd.temperature;
-			$scope.someData.labels = dd.time;
+			$scope.dayData.datasets[0].data = dd.temperature;
+			$scope.dayData.labels = dd.time;
 		}, function(reason) {
 			alert('Failed: ' + reason);
 		});
