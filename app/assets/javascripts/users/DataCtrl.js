@@ -9,10 +9,9 @@ controllersModule.controller('testCtrl', function($route, $scope, $routeParams,
 	
 	$log.debug($routeParams.room);
 
-	currentDate = new Date();
-
 	$scope.today = function() {
-		$scope.dt = currentDate;
+		$log.debug("Today function called!");
+		$scope.dt = new Date();;
 	};
 
 	$scope.today();
