@@ -1,29 +1,35 @@
 package controllers
 
 import play.modules.reactivemongo.MongoController
-import play.modules.reactivemongo.json.collection.JSONCollection
 import scala.concurrent.Future
 import reactivemongo.api.Cursor
 import play.api.libs.concurrent.Execution.Implicits.defaultContext
 import org.slf4j.{ LoggerFactory, Logger }
 import javax.inject.Singleton
 import play.api.mvc._
-import play.api.libs.json._
+import play.api.libs.json.Json
 import org.joda.time.DateTime
+import com.google.inject.Inject
+import play.modules.reactivemongo.ReactiveMongoApi
+import play.modules.reactivemongo.ReactiveMongoComponents
 
+import reactivemongo.play.json._
+import reactivemongo.play.json.collection.JSONCollection
+
+import play.api.libs.json.JsArray
 @Singleton
-class TemperatureController extends Controller with MongoController {
+class TemperatureController @Inject() (val reactiveMongoApi: ReactiveMongoApi)
+    extends Controller with MongoController with ReactiveMongoComponents {
 
   private final val logger: Logger = LoggerFactory.getLogger(classOf[TemperatureController])
 
-  def collection: JSONCollection = db.collection[JSONCollection]("temp")
+  def collection: JSONCollection = reactiveMongoApi.db.collection[JSONCollection]("temp")
 
   // ------------------------------------------ //
   // Using case classes + Json Writes and Reads //
   // ------------------------------------------ //
-
-  import models._
-  import models.JsonFormats._
+  import models.Temperature
+  import models.Temperature._
 
   def dayStatistic(room: String, day: Int, month: Int, year: Int, futureTemperatureList: Future[List[Temperature]]) = {
     val temps = Vector.tabulate(24)(n => (0, 0.0))
@@ -63,22 +69,13 @@ class TemperatureController extends Controller with MongoController {
         .map { temp =>
           Json.arr(temp)
         }
-
-    futureTemperatureJsonArray.map {
-      temperature =>
-        Ok(temperature(0))
-    }
+    futureTemperatureJsonArray.map(t => Ok(t(0).get))
   }
 
   def getTemperateDataForDay(room: String, day: Int, month: Int, year: Int): Future[List[Temperature]] = {
-    // let's do our query
     val cursor: Cursor[Temperature] = collection.
-      // find all
       find(Json.obj("room" -> room, "day" -> day, "month" -> month, "year" -> year)).
-      // sort them by creation date
-      sort(Json.obj("created" -> -1)).
-      // perform the query and get a cursor of JsObject
-      cursor[Temperature]
+      sort(Json.obj("created" -> -1)).cursor[Temperature]
 
     cursor.collect[List]()
   }

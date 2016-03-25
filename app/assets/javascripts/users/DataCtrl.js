@@ -64,5 +64,7 @@ controllersModule.controller('testCtrl', function($route, $scope, $routeParams,
 	
 	$scope.refreshTemperature = callTempService;
 
+	$scope.colorVal = "redBg";
+	
 	callTempService();
 });

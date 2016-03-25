@@ -1,19 +1,67 @@
-.nav, .pagination, .carousel, .panel-title a { cursor: pointer; }
+.nav, .pagination, .carousel, .panel-title a {
+	cursor: pointer;
+}
 
 body {
-    padding-bottom: 30px;
-    min-width: 970px;
+	padding-bottom: 30px;
+	min-width: 970px;
 }
 
 .chart-heading {
-    background: #36a9e1 none repeat scroll 0 0;
-    border-radius: 2px 2px 0 0;
-    color: white;
-    font-size: 16px;
-    overflow: hidden;
-    text-align: center;
+	background: #36a9e1 none repeat scroll 0 0;
+	border-radius: 2px 2px 0 0;
+	color: white;
+	font-size: 16px;
+	overflow: hidden;
+	text-align: center;
+}
+
+.badge {
+	height: 150px;
+	width: 150px;
+	display: table-cell;
+	text-align: center;
+	color: black;
+	font-size: 16px;
+	vertical-align: middle;
+	border-radius: 50%;
+	background: transparent;
+	border: 10px solid red;
+}
+
+.col-middle {
+  vertical-align: middle;
+}
+
+.col-height {
+  display: table-cell;
+  float: none;
+}
+
+.row-height {
+  display: table;
+  table-layout: fixed;
+  height: 100%;
+  width: 100%;
+}
+
+.greenBg-add, .greenBg-remove, .redBg-add, .redBg-remove, .blueBg-add,
+	.blueBg-remove, .whiteBg-add, .whiteBg-remove {
+	transition: border-color 1000ms linear;
+}
+
+.greenBg, .greenBg-add.greenBg-add-active {
+	border-color: rgb(250, 96, 61);
+}
+
+.redBg, .redBg-add.redBg-add-active {
+	border-color: rgb(250, 96, 61);
+}
+
+.blueBg, .blueBg-add.blueBg-add-active {
+	border-color: rgb(103, 194, 239);
 }
 
 footer {
-    text-align: center;
+	text-align: center;
 }

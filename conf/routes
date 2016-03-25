@@ -6,7 +6,6 @@
 
 # Single endpoint for serving AngularJS
 GET     /                           @controllers.Application.index
-GET     /randomUUID                 @controllers.Application.randomUUID
 
 # Temperature API
 GET     /temperature/:room/:d/:m/:y @controllers.TemperatureController.getTemperatureForRoom(room : String, d: Int, m: Int, y: Int)
