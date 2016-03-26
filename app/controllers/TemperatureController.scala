@@ -24,6 +24,7 @@ class TemperatureController @Inject() (val reactiveMongoApi: ReactiveMongoApi)
   private final val logger: Logger = LoggerFactory.getLogger(classOf[TemperatureController])
 
   def collection: JSONCollection = reactiveMongoApi.db.collection[JSONCollection]("temp")
+  def truncateAt(n: Double, p: Int): Double = { val s = math pow (10, p); (math floor n * s) / s }
 
   // ------------------------------------------ //
   // Using case classes + Json Writes and Reads //
@@ -34,7 +35,9 @@ class TemperatureController @Inject() (val reactiveMongoApi: ReactiveMongoApi)
   def dayStatistic(room: String, day: Int, month: Int, year: Int, futureTemperatureList: Future[List[Temperature]]) = {
     val temps = Vector.tabulate(24)(n => (0, 0.0))
     val ttt = futureTemperatureList map (t => t.foldLeft(temps)((li, temp) => li.updated(temp.hour, (li(temp.hour)._1 + 1, li(temp.hour)._2 + temp.temp))))
-    ttt.map(x => List.tabulate(24)(n => Temperature(if (x(n)._1 == 0) 0.0 else x(n)._2 / x(n)._1, room, n, 0, day, month, year)))
+    ttt.map(x => List.tabulate(24)(n => Temperature(if (x(n)._1 == 0) 0.0
+    else truncateAt((x(n)._2 / x(n)._1), 2),
+      room, n, 0, day, month, year)))
   }
 
   def logTemperatureForRoom(room: String, temperature: Double) = Action.async {

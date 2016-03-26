@@ -52,6 +52,15 @@ controllersModule.controller('dataCtrl', function($route, $routeParams,
 
 			data.dayData.datasets[0].data = dd.temperature;
 			data.dayData.labels = dd.time;
+			data.latest = 0.0;
+			for (i = 23; i >= 0; i--) {
+				$log.debug("Temperature: " + dd.temperature[i])
+			    if(dd.temperature[i] != 0.0) {
+			    	data.latest = dd.temperature[i]
+			    	break;
+			    }
+			}
+			
 		}, function(reason) {
 			alert('Failed: ' + reason);
 		});

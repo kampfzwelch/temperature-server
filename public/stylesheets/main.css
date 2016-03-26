@@ -30,19 +30,34 @@ body {
 }
 
 .col-middle {
-  vertical-align: middle;
+	vertical-align: middle;
+}
+
+.center {
+	margin: 0 auto
 }
 
 .col-height {
-  display: table-cell;
-  float: none;
+	display: table-cell;
+	float: none;
+}
+
+.circle {
+	width: 200px;
+	height: 200px;
+	border-radius: 50%;
+	font-size: 50px;
+	color: #fff;
+	line-height: 200px;
+	text-align: center;
+	background: #000
 }
 
 .row-height {
-  display: table;
-  table-layout: fixed;
-  height: 100%;
-  width: 100%;
+	display: table;
+	table-layout: fixed;
+	height: 100%;
+	width: 100%;
 }
 
 .greenBg-add, .greenBg-remove, .redBg-add, .redBg-remove, .blueBg-add,

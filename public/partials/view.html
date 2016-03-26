@@ -23,9 +23,9 @@
 			<div class="col-md-6">
 				<p class="input-group">
 					<input type="text" class="form-control" ng-disabled="true"
-						datepicker-popup="{{data.format}}" ng-model="data.dt" is-open="data.opened"
-						ng-change="data.refreshTemperature()" close-text="Close" /> <span
-						class="input-group-btn">
+						datepicker-popup="{{data.format}}" ng-model="data.dt"
+						is-open="data.opened" ng-change="data.refreshTemperature()"
+						close-text="Close" /> <span class="input-group-btn">
 
 						<button type="button" class="btn btn-default"
 							ng-click="data.open($event)">
@@ -36,28 +36,26 @@
 			</div>
 		</div>
 	</div>
-	
+
 	<div class="row">
-		<div class="row-height">
-			<div class="col-md-6 col-height">
-				<div class="chart-heading">
-					<h2>Day</h2>
-				</div>
-				<div style="width: 80%; height: 80%;">
-					<cjs-line dataset="data.dayData" responsive="true"></cjs-line>
-				</div>
+		<div class="col-md-6">
+			<div class="chart-heading">
+				<h2>Overview</h2>
 			</div>
-			<div class="col-md-6 col-height">
-				<div class="chart-heading">
-					<h2>Now</h2>
-				</div>
-				<div class="col-md-3 col-middle ">
-					<div class="badge" ng-class="colorVal">18°C</div>
-				</div>
-				<div class="col-md-3 col-middle ">
-					<div class="badge" ng-class="colorVal">25°C</div>
-				</div>
+			<div style="width: 100%; height: 100%;">
+				<cjs-line dataset="data.dayData" responsive="true"></cjs-line>
+			</div>
+		</div>
+
+		<div class="col-md-3 ">
+			<div class="chart-heading">
+				<h2>Current</h2>
+			</div>
+			<div class="center circle">
+			   {{data.latest}} °C
 			</div>
 		</div>
 	</div>
+
+</div>
 </div>
