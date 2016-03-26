@@ -1,18 +1,19 @@
 controllersModule.controller('dataCtrl', function($route, $routeParams,
 		TemperatureService, $log) {
-	
+
 	var data = this;
-	
+
 	data.dayData = {
 		labels : [],
 		datasets : [ {
 			data : []
 		} ]
 	};
-	
+
 	data.today = function() {
 		$log.debug("Today function called!");
-		data.dt = new Date();;
+		data.dt = new Date();
+		;
 	}();
 
 	data.room = $routeParams.room;
@@ -32,7 +33,8 @@ controllersModule.controller('dataCtrl', function($route, $routeParams,
 			temperature : temps.slice(Math.max(temps.length - 24, 0)),
 			time : times.slice(Math.max(times.length - 24, 0))
 		};
-	};
+	}
+	;
 
 	data.open = function($event) {
 		$event.preventDefault();
@@ -44,31 +46,43 @@ controllersModule.controller('dataCtrl', function($route, $routeParams,
 	var callTempService = function() {
 		$log.debug("Getting temperature for date " + data.dt.getDate());
 
-		TemperatureService.getTemperature($routeParams.room,
-				data.dt.getDate(), data.dt.getMonth() + 1,
-				data.dt.getFullYear()).then(function(tempData) {
-			var dd = splitData(tempData);
-			data.temperatureData = dd;
+		TemperatureService.getTemperature($routeParams.room, data.dt.getDate(),
+				data.dt.getMonth() + 1, data.dt.getFullYear()).then(
+				function(tempData) {
+					var dd = splitData(tempData);
+					data.temperatureData = dd;
 
-			data.dayData.datasets[0].data = dd.temperature;
-			data.dayData.labels = dd.time;
-			data.latest = 0.0;
-			for (i = 23; i >= 0; i--) {
-				$log.debug("Temperature: " + dd.temperature[i])
-			    if(dd.temperature[i] != 0.0) {
-			    	data.latest = dd.temperature[i]
-			    	break;
-			    }
-			}
-			
-		}, function(reason) {
-			alert('Failed: ' + reason);
-		});
+					data.dayData.datasets[0].data = dd.temperature;
+					data.dayData.labels = dd.time;
+					data.latest = 0.0;
+					for (i = 23; i >= 0; i--) {
+						$log.debug("Temperature: " + dd.temperature[i])
+						if (dd.temperature[i] != 0.0) {
+							data.latest = dd.temperature[i]
+							break;
+						}
+					}
+
+				}, function(reason) {
+					alert('Failed: ' + reason);
+				});
 	}
-	
+
 	data.refreshTemperature = callTempService;
 
-	data.colorVal = "redBg";
-	
+	if (data.latest > 24) {
+		data.colorVal = {
+			'background-color' : 'red'
+		};
+	} else if (data.latest >= 20) {
+		data.colorVal = {
+			'background-color' : 'green'
+		};
+	} else {
+		data.colorVal = {
+			'background-color' : 'blue'
+		};
+	}
+
 	callTempService();
 });
