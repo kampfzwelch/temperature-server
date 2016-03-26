@@ -62,27 +62,31 @@ controllersModule.controller('dataCtrl', function($route, $routeParams,
 							break;
 						}
 					}
+					if (data.latest > 24) {
+						$log.debug("Hot. Temp was: " + data.latest)
+						data.colorVal = {
+							'background-color' : 'red'
+						};
+					} else if (data.latest >= 20) {
+						$log.debug("Normal. Temp was: " + data.latest)
+						data.colorVal = {
+							'background-color' : 'green'
+						};
+					} else {
+						$log.debug("Cold. Temp was: " + data.latest)
+						data.colorVal = {
+							'background-color' : 'blue'
+						};
+
+					}
 
 				}, function(reason) {
 					alert('Failed: ' + reason);
 				});
 	}
 
+	callTempService();
+
 	data.refreshTemperature = callTempService;
 
-	if (data.latest > 24) {
-		data.colorVal = {
-			'background-color' : 'red'
-		};
-	} else if (data.latest >= 20) {
-		data.colorVal = {
-			'background-color' : 'green'
-		};
-	} else {
-		data.colorVal = {
-			'background-color' : 'blue'
-		};
-	}
-
-	callTempService();
 });
