@@ -1,26 +1,21 @@
-controllersModule.controller('testCtrl', function($route, $scope, $routeParams,
+controllersModule.controller('dataCtrl', function($route, $routeParams,
 		TemperatureService, $log) {
-	$scope.dayData = {
+	
+	var data = this;
+	
+	data.dayData = {
 		labels : [],
 		datasets : [ {
 			data : []
 		} ]
 	};
 	
-	$log.debug($routeParams.room);
-
-	$scope.today = function() {
+	data.today = function() {
 		$log.debug("Today function called!");
-		$scope.dt = new Date();;
-	};
+		data.dt = new Date();;
+	}();
 
-	$scope.today();
-
-	$scope.reloadRoute = function() {
-		$route.reload();
-	}
-
-	$scope.room = $routeParams.room;
+	data.room = $routeParams.room;
 
 	function splitData(data) {
 		var temps = [];
@@ -39,32 +34,32 @@ controllersModule.controller('testCtrl', function($route, $scope, $routeParams,
 		};
 	};
 
-	$scope.open = function($event) {
+	data.open = function($event) {
 		$event.preventDefault();
 		$event.stopPropagation();
 
-		$scope.opened = !$scope.opened;
+		data.opened = !data.opened;
 	};
 
 	var callTempService = function() {
-		$log.debug("Getting temperature for date " + $scope.dt.getDate());
+		$log.debug("Getting temperature for date " + data.dt.getDate());
 
 		TemperatureService.getTemperature($routeParams.room,
-				$scope.dt.getDate(), $scope.dt.getMonth() + 1,
-				$scope.dt.getFullYear()).then(function(data) {
-			var dd = splitData(data);
-			$scope.temperatureData = dd;
+				data.dt.getDate(), data.dt.getMonth() + 1,
+				data.dt.getFullYear()).then(function(tempData) {
+			var dd = splitData(tempData);
+			data.temperatureData = dd;
 
-			$scope.dayData.datasets[0].data = dd.temperature;
-			$scope.dayData.labels = dd.time;
+			data.dayData.datasets[0].data = dd.temperature;
+			data.dayData.labels = dd.time;
 		}, function(reason) {
 			alert('Failed: ' + reason);
 		});
 	}
 	
-	$scope.refreshTemperature = callTempService;
+	data.refreshTemperature = callTempService;
 
-	$scope.colorVal = "redBg";
+	data.colorVal = "redBg";
 	
 	callTempService();
 });
